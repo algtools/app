@@ -23,6 +23,14 @@ export default defineConfig({
 				"src/app/**",
 				// Sentry instrumentation files (initialization code, hard to test meaningfully)
 				"src/instrumentation*.ts",
+				// Edge middleware and Better Auth client wiring
+				"src/middleware.ts",
+				"src/lib/auth/authClient.ts",
+				"src/lib/auth/serverAuthClient.ts",
+				"src/lib/auth/getServerSession.ts",
+				"src/lib/auth/sessionStore.ts",
+				"src/lib/auth/useAuthSession.tsx",
+				"src/lib/auth/types.ts",
 			],
 			thresholds: {
 				lines: 85,

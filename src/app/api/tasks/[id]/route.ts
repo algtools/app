@@ -1,7 +1,40 @@
+import "server-only";
+
 import { getUpstreamApiBaseUrl } from "@/lib/api/config";
+import { serverAuthClient } from "@/lib/auth/serverAuthClient";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
+
+async function getBearerToken(): Promise<string | null> {
+	try {
+		const result = await serverAuthClient.token();
+		if (result.error || !result.data?.token) {
+			return null;
+		}
+		return result.data.token;
+	} catch {
+		return null;
+	}
+}
+
+async function upstreamAuthHeaders(
+	extra?: HeadersInit,
+): Promise<HeadersInit | NextResponse> {
+	const token = await getBearerToken();
+	if (!token) {
+		return NextResponse.json(
+			{ success: false, error: "Unauthorized" },
+			{ status: 401 },
+		);
+	}
+
+	return {
+		accept: "application/json",
+		Authorization: `Bearer ${token}`,
+		...extra,
+	};
+}
 
 function parseId(id: string) {
 	const n = Number(id);
@@ -25,10 +58,13 @@ export async function GET(
 		);
 	}
 
+	const authHeaders = await upstreamAuthHeaders();
+	if (authHeaders instanceof NextResponse) return authHeaders;
+
 	const res = await fetch(upstreamUrl(parsed), {
 		method: "GET",
 		cache: "no-store",
-		headers: { accept: "application/json" },
+		headers: authHeaders,
 	});
 	const body = await res.text();
 	return new NextResponse(body, {
@@ -60,10 +96,15 @@ export async function PUT(
 		);
 	}
 
+	const authHeaders = await upstreamAuthHeaders({
+		"content-type": "application/json",
+	});
+	if (authHeaders instanceof NextResponse) return authHeaders;
+
 	const res = await fetch(upstreamUrl(parsed), {
 		method: "PUT",
 		cache: "no-store",
-		headers: { accept: "application/json", "content-type": "application/json" },
+		headers: authHeaders,
 		body: JSON.stringify(json),
 	});
 	const body = await res.text();
@@ -88,10 +129,13 @@ export async function DELETE(
 		);
 	}
 
+	const authHeaders = await upstreamAuthHeaders();
+	if (authHeaders instanceof NextResponse) return authHeaders;
+
 	const res = await fetch(upstreamUrl(parsed), {
 		method: "DELETE",
 		cache: "no-store",
-		headers: { accept: "application/json" },
+		headers: authHeaders,
 	});
 	const body = await res.text();
 	return new NextResponse(body, {

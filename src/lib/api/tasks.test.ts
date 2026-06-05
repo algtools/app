@@ -53,8 +53,8 @@ describe("api/tasks", () => {
 	});
 
 	it("createTask uses env baseUrl when not provided", async () => {
-		const prev = process.env.ALGTOOLS_API_BASE_URL;
-		process.env.ALGTOOLS_API_BASE_URL = "https://env.example";
+		const prev = process.env.NEXT_PUBLIC_APP_SVC_URL;
+		process.env.NEXT_PUBLIC_APP_SVC_URL = "https://env.example";
 
 		const fetchSpy = vi.fn(async (url: RequestInfo | URL) => {
 			expect(typeof url === "string" ? url : url.toString()).toBe(
@@ -80,8 +80,8 @@ describe("api/tasks", () => {
 			},
 		});
 
-		if (prev === undefined) delete process.env.ALGTOOLS_API_BASE_URL;
-		else process.env.ALGTOOLS_API_BASE_URL = prev;
+		if (prev === undefined) delete process.env.NEXT_PUBLIC_APP_SVC_URL;
+		else process.env.NEXT_PUBLIC_APP_SVC_URL = prev;
 	});
 
 	it("createTask sends POST with JSON body", async () => {
@@ -118,8 +118,8 @@ describe("api/tasks", () => {
 	});
 
 	it("readTask uses env baseUrl when not provided", async () => {
-		const prev = process.env.ALGTOOLS_API_BASE_URL;
-		process.env.ALGTOOLS_API_BASE_URL = "https://env.example";
+		const prev = process.env.NEXT_PUBLIC_APP_SVC_URL;
+		process.env.NEXT_PUBLIC_APP_SVC_URL = "https://env.example";
 
 		const fetchSpy = vi.fn(async (url: RequestInfo | URL) => {
 			expect(typeof url === "string" ? url : url.toString()).toBe(
@@ -137,8 +137,8 @@ describe("api/tasks", () => {
 
 		await readTask({ id: 123 });
 
-		if (prev === undefined) delete process.env.ALGTOOLS_API_BASE_URL;
-		else process.env.ALGTOOLS_API_BASE_URL = prev;
+		if (prev === undefined) delete process.env.NEXT_PUBLIC_APP_SVC_URL;
+		else process.env.NEXT_PUBLIC_APP_SVC_URL = prev;
 	});
 
 	it("readTask requests /tasks/:id", async () => {
@@ -164,8 +164,8 @@ describe("api/tasks", () => {
 	});
 
 	it("updateTask uses env baseUrl when not provided", async () => {
-		const prev = process.env.ALGTOOLS_API_BASE_URL;
-		process.env.ALGTOOLS_API_BASE_URL = "https://env.example";
+		const prev = process.env.NEXT_PUBLIC_APP_SVC_URL;
+		process.env.NEXT_PUBLIC_APP_SVC_URL = "https://env.example";
 
 		const fetchSpy = vi.fn(async (url: RequestInfo | URL) => {
 			expect(typeof url === "string" ? url : url.toString()).toBe(
@@ -192,8 +192,8 @@ describe("api/tasks", () => {
 			},
 		});
 
-		if (prev === undefined) delete process.env.ALGTOOLS_API_BASE_URL;
-		else process.env.ALGTOOLS_API_BASE_URL = prev;
+		if (prev === undefined) delete process.env.NEXT_PUBLIC_APP_SVC_URL;
+		else process.env.NEXT_PUBLIC_APP_SVC_URL = prev;
 	});
 
 	it("updateTask requests PUT /tasks/:id with body", async () => {
@@ -232,8 +232,8 @@ describe("api/tasks", () => {
 	});
 
 	it("deleteTask uses env baseUrl when not provided", async () => {
-		const prev = process.env.ALGTOOLS_API_BASE_URL;
-		process.env.ALGTOOLS_API_BASE_URL = "https://env.example";
+		const prev = process.env.NEXT_PUBLIC_APP_SVC_URL;
+		process.env.NEXT_PUBLIC_APP_SVC_URL = "https://env.example";
 
 		const fetchSpy = vi.fn(async (url: RequestInfo | URL) => {
 			expect(typeof url === "string" ? url : url.toString()).toBe(
@@ -251,8 +251,8 @@ describe("api/tasks", () => {
 
 		await deleteTask({ id: 9 });
 
-		if (prev === undefined) delete process.env.ALGTOOLS_API_BASE_URL;
-		else process.env.ALGTOOLS_API_BASE_URL = prev;
+		if (prev === undefined) delete process.env.NEXT_PUBLIC_APP_SVC_URL;
+		else process.env.NEXT_PUBLIC_APP_SVC_URL = prev;
 	});
 
 	it("deleteTask requests DELETE /tasks/:id", async () => {
