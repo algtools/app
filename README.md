@@ -34,21 +34,35 @@ Browser → middleware (session check via auth-svc cookies)
         → requireAuth validates JWT via auth-svc JWKS RPC
 ```
 
-## Environment variables (`.env.local`)
+## Environment variables
 
-| Variable                   | Description         |
-| -------------------------- | ------------------- |
-| `NEXT_PUBLIC_AUTH_SVC_URL` | auth-svc worker URL |
-| `NEXT_PUBLIC_AUTH_APP_URL` | Auth login app URL  |
-| `NEXT_PUBLIC_APP_SVC_URL`  | app-svc worker URL  |
+Create `.env.local` for local development. In Cloudflare, set the same `NEXT_PUBLIC_*` values as Worker environment variables at deploy time (they are inlined at build time).
+
+### Runtime / app config (`NEXT_PUBLIC_*`)
+
+| Variable                   | Required | Description                                            |
+| -------------------------- | -------- | ------------------------------------------------------ |
+| `NEXT_PUBLIC_AUTH_SVC_URL` | Yes      | auth-svc worker URL (session + JWT)                    |
+| `NEXT_PUBLIC_AUTH_APP_URL` | Yes      | Auth login app URL (middleware redirect target)        |
+| `NEXT_PUBLIC_APP_SVC_URL`  | Yes      | app-svc worker URL (tasks API)                         |
+| `NEXT_PUBLIC_SENTRY_DSN`   | Optional | Sentry browser/server DSN                              |
+| `NEXT_PUBLIC_ENVIRONMENT`  | Optional | Sentry environment tag (`development` or `production`) |
+
+### Build-time only (`.env.local` / CI — source map upload)
+
+| Variable            | Description                                           |
+| ------------------- | ----------------------------------------------------- |
+| `SENTRY_ORG`        | Sentry org slug (e.g. `algenium`)                     |
+| `SENTRY_PROJECT`    | Sentry project name (e.g. `app`)                      |
+| `SENTRY_AUTH_TOKEN` | Sentry auth token for `@sentry/nextjs` webpack plugin |
 
 <!-- dash-content-end -->
 
 ## Getting started
 
 ```bash
-cp .env.example .env.local
 pnpm install
+# Create .env.local with the variables above, then:
 pnpm dev
 ```
 
